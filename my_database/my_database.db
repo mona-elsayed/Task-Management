@@ -1,0 +1,10 @@
+CREATE TABLE tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    due_date TEXT,  -- Store as ISO 8601 date string (YYYY-MM-DD)
+    status TEXT CHECK(status IN ('Pending', 'In Progress', 'Completed')) DEFAULT 'Pending',
+    priority INTEGER CHECK(priority BETWEEN 1 AND 5),  -- 1 (Low) to 5 (High)
+    created_at TEXT DEFAULT (datetime('now')),  -- Auto store creation date
+    updated_at TEXT DEFAULT (datetime('now'))  -- Auto store last updated date
+);
