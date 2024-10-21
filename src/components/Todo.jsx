@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Ensure axios is installed
-import Countdown from "./Countdown"; // Adjust the path based on your project structure
+import axios from "axios";
+import Countdown from "./Countdown";
 
 const Todo = () => {
-  // Form State
+  // Form States
   const [inputTitle, setInputTitle] = useState("");
   const [inputDesc, setInputDesc] = useState("");
   const [inputCategory, setInputCategory] = useState("Work");
   const [inputPriority, setInputPriority] = useState("Medium");
   const [inputDueDate, setInputDueDate] = useState("");
 
-  // Task List State
+  // The list of tasks fetched from the backend
   const [items, setItems] = useState([]);
 
-  // Editing State
+  // Handle editing tasks
   const [editTaskData, setEditTaskData] = useState(null);
   const [editingTaskId, setEditingTaskId] = useState(null);
 
-  // Filter and Search State
+  // To handel search tasks by keywords or filter by task status
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
 
-  // Sorting State
+  // ascending or descending by due date
   const [sortOrder, setSortOrder] = useState("asc"); // "asc" for ascending, "desc" for descending
 
   // Loading and Error States
@@ -29,7 +29,7 @@ const Todo = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // Effect to Load Tasks from the database on Mount
+  // Effect to Load Tasks from the database on backend
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -49,14 +49,14 @@ const Todo = () => {
     }
   };
 
-  // Input Handlers
+  // To handle the form inputs for creating a new task
   const handleInputTitle = (e) => setInputTitle(e.target.value);
   const handleInputDesc = (e) => setInputDesc(e.target.value);
   const handleInputCategory = (e) => setInputCategory(e.target.value);
   const handleInputPriority = (e) => setInputPriority(e.target.value);
   const handleInputDueDate = (e) => setInputDueDate(e.target.value);
 
-  // Add a New Task
+  // sends new task data to the backend and updates the task list
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!inputTitle.trim() || !inputDesc.trim() || !inputDueDate) {
@@ -95,7 +95,7 @@ const Todo = () => {
     setSuccessMessage(null);
   };
 
-  // Save Edited Task
+  // updates an existing task
   const handleSaveEdit = async (e) => {
     e.preventDefault();
     if (
@@ -138,7 +138,7 @@ const Todo = () => {
     }
   };
 
-  // Delete Task
+  // removes a task from the backend
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this task?"
@@ -158,7 +158,7 @@ const Todo = () => {
     }
   };
 
-  // Change Task Status
+  // Change Task Status "from "in-progress" to "completed""
   const handleStatusChange = async (id) => {
     const taskToUpdate = items.find((task) => task.id === id);
     if (!taskToUpdate) return;
@@ -186,7 +186,7 @@ const Todo = () => {
     }
   };
 
-  // Reset Form Fields
+  // Clears all form inputs after a task is added or updated
   const resetForm = () => {
     setInputTitle("");
     setInputDesc("");
@@ -201,12 +201,13 @@ const Todo = () => {
       return false;
     }
     return (
+      //To ensure the search is case-insensitive
       task.name.toLowerCase().includes(searchQuery) ||
       task.desc.toLowerCase().includes(searchQuery)
     );
   });
 
-  // Sort Tasks by Due Date
+  // Sort Tasks by Due Date, controlled by sortOrder
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     return sortOrder === "asc"
       ? new Date(a.dueDate) - new Date(b.dueDate)
@@ -229,7 +230,7 @@ const Todo = () => {
   };
 
   return (
-    <div className="container mx-auto my-8 p-4">
+    <div className="container mx-auto my-4.5 p-4">
       <h1 className="text-3xl font-bold mb-4 text-center">Task Management</h1>
 
       {/* Display Success Message */}
@@ -247,7 +248,7 @@ const Todo = () => {
       )}
 
       {/* Task Form */}
-      <div className="border rounded shadow p-6 bg-yellow-100 mb-8">
+      <div className="border rounded shadow p-4 bg-yellow-100 mb-4.5">
         <h2 className="text-xl font-semibold mb-4">
           {editingTaskId ? "Edit Task" : "Add Task"}
         </h2>
@@ -420,7 +421,7 @@ const Todo = () => {
       {/* Editing Task Modal */}
       {editingTaskId && editTaskData && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md w-96">
+          <div className="bg-white p-4 rounded shadow-md w-96">
             <h2 className="text-xl font-semibold mb-4">Edit Task</h2>
             <form onSubmit={handleSaveEdit}>
               <div>
